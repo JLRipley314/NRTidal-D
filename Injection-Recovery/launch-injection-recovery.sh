@@ -17,8 +17,8 @@ for det in "${DETECTORS[@]}"; do
     d="$outstem/${det}-recover-Xi${xibar}"
     mkdir $d
     cd $d
-    cp $nrtd/Injection-Recovery/nrtidal_d.py nrtidal_d.py 
-    cp $nrtd/Injection-Recovery/updated_binary_love_marginalized.py updated_binary_love_marginalized.py 
+    cp $nrtd/Waveform-Model/nrtidal_d.py nrtidal_d.py 
+    cp $nrtd/Waveform-Model/updated_binary_love_marginalized.py updated_binary_love_marginalized.py 
     cp $nrtd/Injection-Recovery/$main main.py 
     cp $nrtd/ASD-Files/*.txt . 
     cp $nrtd/Injection-Recovery/launch.slurm launch.slurm
