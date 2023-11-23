@@ -1,5 +1,10 @@
 #!/usr/bin/bash
 
+#
+# Launches multiple injection/recovery runs. 
+# Saves to outstem.
+#
+
 nrtd=$HOME/NRTidal-D
 
 #
@@ -7,11 +12,11 @@ nrtd=$HOME/NRTidal-D
 #
 outstem=/home/ripley/scratch/GW170817-InjectionRecovery
 
-DETECTORS=("O4" "O5" "CE")
-XIBARS=(20 200 400)
+detectors=("O4" "O5" "CE")
+xibars=(20 200 400)
 
-for det in "${DETECTORS[@]}"; do
-  for xibar in "${XIBARS[@]}"; do
+for det in "${detectors[@]}"; do
+  for xibar in "${xibars[@]}"; do
     echo "Detector ${det}, Xibar ${xibar}"
     main="main_${det}.py"
     d="$outstem/${det}-recover-Xi${xibar}"

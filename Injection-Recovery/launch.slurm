@@ -1,5 +1,11 @@
 #!/bin/bash -l
 
+#
+# Usage:
+#
+# sbatch launch.slurm [value of xibar] 
+#
+
 #SBATCH --job-name=GW17
 
 # #SBATCH --partition=GravityTheory
@@ -26,6 +32,6 @@ export OPENBLAS_NUM_THREADS=1
 # Assuming you have a conda environment called "bilby"
 # See the environment.yml file
 source /home/${USER}/.bashrc
-source activate pbilby 
+source activate bilby 
 
 python main.py -n $SLURM_CPUS_PER_TASK -x ${1}
