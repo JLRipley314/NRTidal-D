@@ -1,3 +1,7 @@
+'''
+Parameter estimation script that computes the posterior probability on all binary neutron star parameters,
+including xibar. The script makes use of the updated marginalized binary love relations arXiv:1903.03909.
+'''
 #!/usr/bin/env python
 
 import sys
@@ -35,6 +39,9 @@ bilby.core.utils.setup_logger(outdir=args.outdir, label=args.label, log_level = 
 logger = bilby.core.utils.logger
 
 #-----------------------------------------------------------------
+'''
+Set up sampling frequency and start, end times of the signal
+'''
 trigger_time = 1187008882.43
 
 roll_off = 0.2  # Roll off duration of tukey window in seconds
@@ -48,13 +55,17 @@ end_time = start_time + duration
 sampling_frequency = 4096
 #-----------------------------------------------------------------
 
-
+'''
+Read in the glitch free GW170817 data
+'''
 hdf5_filenames = {
     "H1": args.strain_dir+ "/H-H1_LOSC_CLN_4_V1-1187007040-2048_no_glitch.hdf5",
     "L1": args.strain_dir+ "/L-L1_LOSC_CLN_4_V1-1187007040-2048_no_glitch.hdf5",
     "V1": args.strain_dir+ "/V-V1_LOSC_CLN_4_V1-1187007040-2048_no_glitch.hdf5"
 }
-
+'''
+Read in detector PSD files
+'''
 datapsd=np.loadtxt(args.strain_dir + '/GWTC1_GW170817_PSDs.dat')
 
 farray=datapsd[:,0]
@@ -63,7 +74,9 @@ l1psd= datapsd[:,2]
 v1psd = datapsd[:,3]
 
 psd_array = {"H1":h1psd, "L1":l1psd, "V1": v1psd}
-
+'''
+Set up detector network
+'''
 det_names = np.array(["H1,L1,V1"])
 ifo_list = bilby.gw.detector.InterferometerList([])
 
@@ -88,16 +101,11 @@ logger.info("Finished setting up strain and PSD.")
 logger.info("Saving IFO data plots to {}".format(args.outdir))
 bilby.core.utils.check_directory_exists_and_if_not_mkdir(args.outdir)
 ifo_list.plot_data(outdir=args.outdir, label=args.label)
-#-----------------------------------------------------------------
-
-# injection_parameters = dict(
-#         mass_1=1.51,mass_2=1.26,a_1=0.02, a_2=0.02, tilt_1=1.10, tilt_2=1.20,
-#         phi_12=3.17, phi_jl=3.25, luminosity_distance=40., theta_jn=2.63, psi=1.83,
-#         phase=1.3, geocent_time=trigger_time, ra=3.35, dec= -0.29,lambda_1 =500,
-#         lambda_2 = 350
-# )
 
 #-------------------------------------------------------------
+'''
+Set up priors on all waveform parameters.
+'''
 priors = bilby.gw.prior.PriorDict()
 priors['mass_1'] = bilby.gw.prior.Constraint(minimum=1, maximum=2,
                                              name='mass_1', latex_label='$m_1$', unit=None)
@@ -132,10 +140,6 @@ priors['psi'] = bilby.gw.prior.Uniform(name='psi', minimum=0, maximum=np.pi, bou
 priors["lambda_1"] = bilby.core.prior.Constraint( name="lambda_1", minimum=0, maximum=3000)
 priors["lambda_2"] = bilby.core.prior.Constraint(name="lambda_2", minimum=0, maximum=3000)
 priors["lambda_s"] = bilby.core.prior.Triangular(name="lambda_s", mode=1500,minimum = 0, maximum = 3000,latex_label='$\\Lambda_s$')
-# priors["lambda_tilde"] = bilby.core.prior.Uniform(0, 5000, name="lambda_tilde")
-# priors["delta_lambda_tilde"] = bilby.core.prior.Uniform(
-#     -500, 1000, name="delta_lambda_tilde")
-
 
 priors['geocent_time'] = bilby.core.prior.Uniform(
     minimum=trigger_time - 0.2,
@@ -151,10 +155,10 @@ priors['ra'] =  bilby.gw.prior.Uniform(name='ra', minimum=0, maximum=2 * np.pi, 
 
 priors["xi_bar"] = bilby.core.prior.Uniform(0,1000,name="xi_bar")
 
-#for key in ['chi_1','chi_2']:
-#    priors.pop(key)
 #-----------------------------------------------------------------
-
+'''
+Set up waveform generator and waveform source model
+'''
 waveform_arguments = dict(
     waveform_approximant="IMRPhenomPv2_NRTidal",
     reference_frequency=20.0
@@ -169,12 +173,18 @@ waveform_generator = bilby.gw.WaveformGenerator(
 )
 
 #-----------------------------------------------------------------
+'''
+Set up likelihood. We marginalize over the phase.
+'''
 likelihood = bilby.gw.GravitationalWaveTransient(
     interferometers=ifo_list, waveform_generator=waveform_generator,
     time_marginalization=False, phase_marginalization=True,
     distance_marginalization=False, priors=priors)
 
 #-----------------------------------------------------------------
+'''
+Set up sampler settings.
+'''
 import sampler_params
 sampler_parameters = sampler_params.sampler_params()
 
