@@ -11,22 +11,29 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=your_email
 
+nrtd=$HOME/NRTidal-D
+
 source /home/${USER}/.bashrc
-conda activate pbilby #activate your conda environment
+conda activate bilby #activate your conda environment
 
-fname=xibar_GW170817_binary_love.py #parameter estimation script
-strain_GW170817=$HOME/scratch/GW170817-Data/no-glitch #path to the data
+#
+# Manually set this: path to the strain data
+#
+strain_GW170817=$HOME/scratch/GW170817-Data/no-glitch 
 
-#switch to scratch directory and copy over files from your project directory
+#
+# Manually set this: path to directory to save to
+#
 savedir=$HOME/scratch/$SLURM_JOB_NAME/$SLURM_JOB_ID
-olddir=$PWD
+
+# Parameter estimation script
+fname=xibar_GW170817_binary_love.py 
+
 mkdir -p $savedir
 cd  $savedir
-cp $olddir/injection.py .
-cp $olddir/$fname .
-cp $olddir/nrtidal_d.py .
-cp $olddir/updated_binary_love_marginalized.py .
-cp $olddir/sampler_params.py .
+cp $nrtd/GW170817-Recovery/$fname .
+cp $nrtd/Waveform-Model/nrtidal_d.py .
+cp $nrtd/Waveform-Model/updated_binary_love_marginalized.py .
 
 python $fname -n $SLURM_CPUS_PER_TASK -sd $strain_GW170817
 

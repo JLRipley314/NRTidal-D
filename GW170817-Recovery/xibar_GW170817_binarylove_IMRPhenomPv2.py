@@ -1,15 +1,15 @@
 '''
-Parameter estimation script that computes the posterior probability on all binary neutron star parameters,
-including xibar. The script makes use of the updated marginalized binary love relations arXiv:1903.03909.
+Parameter estimation script that computes the posterior probability on all binary neutron star parameters, including xibar. 
+Base waveform is IMRPhenomPv2
+
+The script makes use of the updated marginalized binary love relations arXiv:1903.03909.
 '''
 #!/usr/bin/env python
 
 import sys
-# sys.path.append("../../../NRTidal-D")
 import bilby
 import nrtidal_d
 import numpy as np
-from astropy.coordinates import SkyCoord
 from gwpy.timeseries import TimeSeries
 
 #-----------------------------------------------------------------
@@ -182,13 +182,6 @@ likelihood = bilby.gw.GravitationalWaveTransient(
     distance_marginalization=False, priors=priors)
 
 #-----------------------------------------------------------------
-'''
-Set up sampler settings.
-'''
-import sampler_params
-sampler_parameters = sampler_params.sampler_params()
-
-assert(sampler_parameters["sampler"]=="dynesty")
 
 result = bilby.run_sampler(
         likelihood=likelihood, 
@@ -200,7 +193,7 @@ result = bilby.run_sampler(
         nact=10, 
         dlogz=0.01, 
         maxmcmc=5000,
-        check_point_delta_t=sampler_parameters["check_point_delta_t"],
+        check_point_delta_t=3600,
         npool=args.npool, 
         outdir=args.outdir, label=args.label,
         conversion_function=bilby.gw.conversion.generate_all_bns_parameters)
