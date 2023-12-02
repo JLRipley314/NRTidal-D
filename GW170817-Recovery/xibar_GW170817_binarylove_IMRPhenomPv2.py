@@ -27,8 +27,8 @@ parser.add_argument("-n", "--npool", type=int, default=1,
                     help="Number of CPUs.")
 
 parser.add_argument("-sd", "--strain_dir", type=str, 
-default = "/Users/abhi/Work/Projects/BDNK-Critical-Collapse/Data-Analysis/Cluster-Data/scratch/GW170817_files/Strain-Data-GW170817/no-glitch",
-help="Location of strain data")
+                    default = "/Users/abhi/Work/Projects/BDNK-Critical-Collapse/Data-Analysis/Cluster-Data/scratch/GW170817_files/Strain-Data-GW170817/no-glitch",
+                    help="Path to directory that contains the strain data.")
 
 
 args = parser.parse_args()
