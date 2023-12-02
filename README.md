@@ -12,6 +12,10 @@ For more details of our analysis, see the accompanying paper (see the `Citation`
 
 We used the glitch removed strain data, which can be accessed [here](https://gwosc.org/events/GW170817/).
 
+# Dependencies 
+
+The `environment.yml` file contains more details, but the main dependency is the [bilby](https://lscsoft.docs.ligo.org/bilby/) gravitational wave analysis library.
+
 # Authors
 
 If you have any questions, please feel free to contact any one of us. 
