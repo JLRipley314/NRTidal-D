@@ -1,8 +1,8 @@
 """
 Parameter estimation script that computes the posterior probability on all binary neutron star parameters, including xibar. 
-Base waveform is IMRPhenomD.
+Base waveform is IMRPhenomPv2_NRT.
 
-The script makes use of the updated marginalized binary love relations arXiv:1903.03909.
+The script samples directly on Lambda_{A,B}.
 """
 
 import sys
