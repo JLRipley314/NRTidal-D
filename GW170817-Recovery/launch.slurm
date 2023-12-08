@@ -27,7 +27,9 @@ strain_GW170817=$HOME/scratch/GW170817-Data/no-glitch
 savedir=$HOME/scratch/$SLURM_JOB_NAME/$SLURM_JOB_ID
 
 # Parameter estimation script
-fname=xibar_GW170817_binary_love.py 
+fname=xibar_GW170817_binary_love_IMRPhenomPv2.py 
+#fname=xibar_GW170817_binary_love_IMRPhenomD.py 
+#fname=xibar_GW170817_no_binary_love.py 
 
 mkdir -p $savedir
 cd  $savedir
@@ -36,4 +38,3 @@ cp $nrtd/Waveform-Model/nrtidal_d.py .
 cp $nrtd/Waveform-Model/updated_binary_love_marginalized.py .
 
 python $fname -n $SLURM_CPUS_PER_TASK -sd $strain_GW170817
-

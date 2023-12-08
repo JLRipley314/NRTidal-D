@@ -1,11 +1,14 @@
-#!/usr/bin/env python
+"""
+Parameter estimation script that computes the posterior probability on all binary neutron star parameters, including xibar. 
+Base waveform is IMRPhenomD.
+
+The script makes use of the updated marginalized binary love relations arXiv:1903.03909.
+"""
 
 import sys
-# sys.path.append("../../../NRTidal-D")
 import bilby
 import nrtidal_d
 import numpy as np
-from astropy.coordinates import SkyCoord
 from gwpy.timeseries import TimeSeries
 
 #-----------------------------------------------------------------
@@ -23,8 +26,8 @@ parser.add_argument("-n", "--npool", type=int, default=1,
                     help="Number of CPUs.")
 
 parser.add_argument("-sd", "--strain_dir", type=str, 
-default = "/Users/abhi/Work/Projects/BDNK-Critical-Collapse/Data-Analysis/Cluster-Data/scratch/GW170817_files/Strain-Data-GW170817/no-glitch",
-help="Location of strain data")
+                    default = "/Users/abhi/Work/Projects/BDNK-Critical-Collapse/Data-Analysis/Cluster-Data/scratch/GW170817_files/Strain-Data-GW170817/no-glitch",
+                    help="Location of strain data")
 
 
 args = parser.parse_args()
@@ -55,7 +58,7 @@ hdf5_filenames = {
     "V1": args.strain_dir+ "/V-V1_LOSC_CLN_4_V1-1187007040-2048_no_glitch.hdf5"
 }
 
-datapsd=np.loadtxt(args.strain_dir + '/GWTC1_GW170817_PSDs.dat')
+datapsd=np.loadtxt(args.strain_dir + "/GWTC1_GW170817_PSDs.dat")
 
 farray=datapsd[:,0]
 h1psd = datapsd[:,1]
@@ -88,71 +91,57 @@ logger.info("Finished setting up strain and PSD.")
 logger.info("Saving IFO data plots to {}".format(args.outdir))
 bilby.core.utils.check_directory_exists_and_if_not_mkdir(args.outdir)
 ifo_list.plot_data(outdir=args.outdir, label=args.label)
-#-----------------------------------------------------------------
-
-# injection_parameters = dict(
-#         mass_1=1.51,mass_2=1.26,a_1=0.02, a_2=0.02, tilt_1=1.10, tilt_2=1.20,
-#         phi_12=3.17, phi_jl=3.25, luminosity_distance=40., theta_jn=2.63, psi=1.83,
-#         phase=1.3, geocent_time=trigger_time, ra=3.35, dec= -0.29,lambda_1 =500,
-#         lambda_2 = 350
-# )
 
 #-------------------------------------------------------------
+
 priors = bilby.gw.prior.PriorDict()
-priors['mass_1'] = bilby.gw.prior.Constraint(minimum=1, maximum=2,
-                                             name='mass_1', latex_label='$m_1$', unit=None)
-priors['mass_2'] = bilby.gw.prior.Constraint(minimum=1, maximum=2,
-                                             name='mass_2', latex_label='$m_2$', unit=None)
+priors["mass_1"] = bilby.gw.prior.Constraint(minimum=1, maximum=2,
+                                             name="mass_1", latex_label="$m_1$", unit=None)
+priors["mass_2"] = bilby.gw.prior.Constraint(minimum=1, maximum=2,
+                                             name="mass_2", latex_label="$m_2$", unit=None)
 
-priors['chirp_mass'] = bilby.gw.prior.UniformInComponentsChirpMass(minimum=1.184, maximum=1.25, name='chirp_mass', 
-                                              latex_label='$\\mathcal{M}$', unit=None)
-priors['mass_ratio'] = bilby.gw.prior.UniformInComponentsMassRatio(minimum=0.5, maximum=1, name='mass_ratio',
-                                              latex_label='$q$', unit=None)
+priors["chirp_mass"] = bilby.gw.prior.UniformInComponentsChirpMass(minimum=1.184, maximum=1.25, name="chirp_mass", 
+                                              latex_label="$\\mathcal{M}$", unit=None)
+priors["mass_ratio"] = bilby.gw.prior.UniformInComponentsMassRatio(minimum=0.5, maximum=1, name="mass_ratio",
+                                              latex_label="$q$", unit=None)
 
-priors['a_1'] = bilby.gw.prior.Uniform(name='a_1', minimum=0, maximum=0.05,
-                                       latex_label='$a_1$', unit=None, boundary=None)
-priors['a_2'] = bilby.gw.prior.Uniform(name='a_2', minimum=0, maximum=0.05,
-                                       latex_label='$a_2$', unit=None, boundary=None)
+priors["a_1"] = bilby.gw.prior.Uniform(name="a_1", minimum=0, maximum=0.05,
+                                       latex_label="$a_1$", unit=None, boundary=None)
+priors["a_2"] = bilby.gw.prior.Uniform(name="a_2", minimum=0, maximum=0.05,
+                                       latex_label="$a_2$", unit=None, boundary=None)
 
-priors['tilt_1'] = bilby.prior.Sine(name='tilt_1', latex_label='$\\theta_1$', unit=None)
-priors['tilt_2'] = bilby.prior.Sine(name='tilt_2', latex_label='$\\theta_2$', unit=None)
-priors['phi_12'] = bilby.gw.prior.Uniform(name='phi_12', minimum=0, maximum=2 * np.pi,
-                                          boundary='periodic', latex_label='$\\Delta\\phi$', unit=None)
-priors['phi_jl'] = bilby.gw.prior.Uniform(name='phi_jl', minimum=0, maximum=2 * np.pi,
-                                          boundary='periodic', latex_label='$\\phi_{JL}$', unit=None)
-priors['luminosity_distance'] = bilby.gw.prior.UniformSourceFrame(name='luminosity_distance',
-                                                                     minimum=10, maximum=100, latex_label='$d_L$',
-                                                                     unit='Mpc', boundary=None)
-priors['phase'] = bilby.core.prior.Uniform(name='phase', minimum=0, maximum=2 * np.pi, boundary='periodic')
-priors['theta_jn'] = bilby.prior.Sine(name='theta_jn', latex_label='$\\theta_{JN}$',
+priors["tilt_1"] = bilby.prior.Sine(name="tilt_1", latex_label="$\\theta_1$", unit=None)
+priors["tilt_2"] = bilby.prior.Sine(name="tilt_2", latex_label="$\\theta_2$", unit=None)
+priors["phi_12"] = bilby.gw.prior.Uniform(name="phi_12", minimum=0, maximum=2 * np.pi,
+                                          boundary="periodic", latex_label="$\\Delta\\phi$", unit=None)
+priors["phi_jl"] = bilby.gw.prior.Uniform(name="phi_jl", minimum=0, maximum=2 * np.pi,
+                                          boundary="periodic", latex_label="$\\phi_{JL}$", unit=None)
+priors["luminosity_distance"] = bilby.gw.prior.UniformSourceFrame(name="luminosity_distance",
+                                                                     minimum=10, maximum=100, latex_label="$d_L$",
+                                                                     unit="Mpc", boundary=None)
+priors["phase"] = bilby.core.prior.Uniform(name="phase", minimum=0, maximum=2 * np.pi, boundary="periodic")
+priors["theta_jn"] = bilby.prior.Sine(name="theta_jn", latex_label="$\\theta_{JN}$",
                                          unit=None, minimum=0, maximum=np.pi, boundary=None)
-priors['psi'] = bilby.gw.prior.Uniform(name='psi', minimum=0, maximum=np.pi, boundary='periodic',
-                                       latex_label='$\\psi$', unit=None)
+priors["psi"] = bilby.gw.prior.Uniform(name="psi", minimum=0, maximum=np.pi, boundary="periodic",
+                                       latex_label="$\\psi$", unit=None)
 
 priors["lambda_1"] = bilby.core.prior.Uniform( name="lambda_1", minimum=0, maximum=3000)
 priors["lambda_2"] = bilby.core.prior.Uniform(name="lambda_2", minimum=0, maximum=3000)
-# priors["lambda_s"] = bilby.core.prior.Uniform(name="lambda_s", minimum = 0, maximum = 3000)
-# priors["lambda_tilde"] = bilby.core.prior.Uniform(0, 5000, name="lambda_tilde")
-# priors["delta_lambda_tilde"] = bilby.core.prior.Uniform(
-#     -500, 1000, name="delta_lambda_tilde")
 
-
-priors['geocent_time'] = bilby.core.prior.Uniform(
+priors["geocent_time"] = bilby.core.prior.Uniform(
     minimum=trigger_time - 0.2,
     maximum=trigger_time + 0.2,
-    name='geocent_time',
-    latex_label='$t_c$',
-    unit='$s$'
+    name="geocent_time",
+    latex_label="$t_c$",
+    unit="$s$"
 )
-priors['dec'] =  bilby.prior.Cosine(name='dec', latex_label='$\\mathrm{DEC}$',
+priors["dec"] =  bilby.prior.Cosine(name="dec", latex_label="$\\mathrm{DEC}$",
                                        unit=None, minimum=-np.pi / 2, maximum=np.pi / 2, boundary=None)
-priors['ra'] =  bilby.gw.prior.Uniform(name='ra', minimum=0, maximum=2 * np.pi, boundary='periodic',
-                                       latex_label='$\\mathrm{RA}$', unit=None)
+priors["ra"] =  bilby.gw.prior.Uniform(name="ra", minimum=0, maximum=2 * np.pi, boundary="periodic",
+                                       latex_label="$\\mathrm{RA}$", unit=None)
 
 priors["xi_bar"] = bilby.core.prior.Uniform(0,1000,name="xi_bar")
 
-#for key in ['chi_1','chi_2']:
-#    priors.pop(key)
 #-----------------------------------------------------------------
 
 waveform_arguments = dict(
@@ -175,25 +164,20 @@ likelihood = bilby.gw.GravitationalWaveTransient(
     distance_marginalization=False, priors=priors)
 
 #-----------------------------------------------------------------
-import sampler_params
-sampler_parameters = sampler_params.sampler_params()
-
-assert(sampler_parameters["sampler"]=="dynesty")
 
 result = bilby.run_sampler(
         likelihood=likelihood, 
         priors=priors, 
         sampler="dynesty", 
-        sample = 'rwalk',
-        bound = 'live',
+        sample = "rwalk",
+        bound = "live",
         nlive=1500, 
         nact=10, 
         dlogz=0.01, 
         maxmcmc=5000,
-        check_point_delta_t=sampler_parameters["check_point_delta_t"],
+        check_point_delta_t=3600,
         npool=args.npool, 
         outdir=args.outdir, label=args.label,
         conversion_function=bilby.gw.conversion.generate_all_bns_parameters)
 
 result.plot_corner()
-
