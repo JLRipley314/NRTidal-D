@@ -15,7 +15,7 @@ To run these scripts, we recommend making a new `conda` environment.
 
 The `environment.yml` file contains more details about the dependencies of our scripts.
 If you have any problems getting the environment set up, please email us.
-The main dependence is the [bilby](https://lscsoft.docs.ligo.org/bilby/) gravitational wave analysis library. 
+The main dependency is the [bilby](https://lscsoft.docs.ligo.org/bilby/) gravitational wave analysis library. 
 If you have that installed our scripts should run fine, but beware of the different versions of bilby; not everything may work properly if you use an incompatible version.
 
 # GW170817 Data 
