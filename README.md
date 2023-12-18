@@ -37,4 +37,21 @@ If you have any questions, please feel free to contact any one of us.
 We will add the appropriate citation once the paper appears on the arxiv.
 ```
 bibtex 
+```
+
+For reference, the "theory" paper (derivation of the dissiaptive tidal deformability phasing formula) is
+```
+@article{Ripley:2023qxo,
+    author = "Ripley, Justin L. and Hegade K. R., Abhishek and Yunes, Nicolas",
+    title = "{Probing internal dissipative processes of neutron stars with gravitational waves during the inspiral of neutron star binaries}",
+    eprint = "2306.15633",
+    archivePrefix = "arXiv",
+    primaryClass = "gr-qc",
+    doi = "10.1103/PhysRevD.108.103037",
+    journal = "Phys. Rev. D",
+    volume = "108",
+    number = "10",
+    pages = "103037",
+    year = "2023"
+}
 ``` 
