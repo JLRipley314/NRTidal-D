@@ -1,5 +1,5 @@
 """
-Parameter estimation script that computes the posterior probability on all binary neutron star parameters, including xibar. 
+Parameter estimation script that computes the posterior probability on all binary neutron star parameters, including xitilde. 
 Base waveform is IMRPhenomPv2_NRT.
 
 The script samples directly on Lambda_{A,B}.
@@ -140,7 +140,7 @@ priors["dec"] =  bilby.prior.Cosine(name="dec", latex_label="$\\mathrm{DEC}$",
 priors["ra"] =  bilby.gw.prior.Uniform(name="ra", minimum=0, maximum=2 * np.pi, boundary="periodic",
                                        latex_label="$\\mathrm{RA}$", unit=None)
 
-priors["xi_bar"] = bilby.core.prior.Uniform(0,1000,name="xi_bar")
+priors["xi_tilde"] = bilby.core.prior.Uniform(0,1000,name="xi_tilde")
 
 #-----------------------------------------------------------------
 

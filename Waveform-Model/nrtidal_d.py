@@ -7,7 +7,7 @@ import updated_binary_love_marginalized as bn
 
 GC = GM_sun.value / pow(c.value,3) 
 
-def _dissipative_tidal_phase_xi_bar(frequency_array, mass_1, mass_2, xi_bar):
+def _dissipative_tidal_phase_xi_tilde(frequency_array, mass_1, mass_2, xi_tilde):
     """
     Dissipative tidal deformability contribution to the phase in the frequency domain. 
     See 2306.15633
@@ -20,7 +20,7 @@ def _dissipative_tidal_phase_xi_bar(frequency_array, mass_1, mass_2, xi_bar):
     
     u = (GC*np.pi*frequency_array[mask]*mass_total) ** (1./3.)
     phi = np.zeros_like(frequency_array)
-    phi[mask] -= (225/512) * (1/mass_sym) * xi_bar * (u ** 3) * np.log(u) 
+    phi[mask] -= (225/512) * (1/mass_sym) * xi_tilde * (u ** 3) * np.log(u) 
 
     return phi
 
@@ -30,14 +30,14 @@ def source(
         luminosity_distance, 
         a_1, tilt_1, phi_12, a_2, tilt_2, phi_jl, theta_jn, phase, 
         lambda_1, lambda_2,
-        xi_bar, 
+        xi_tilde, 
         **kwargs):
     """
     Add dissipative tidal deformability to binary neutron star waveform in the frequency domain.
     """
     freqs = np.append(frequency_array, kwargs['reference_frequency'])
 
-    phi = _dissipative_tidal_phase_xi_bar(frequency_array, mass_1, mass_2, xi_bar)
+    phi = _dissipative_tidal_phase_xi_tilde(frequency_array, mass_1, mass_2, xi_tilde)
 
     polarizations = bilby.gw.source.lal_binary_neutron_star(
             frequency_array, 
@@ -58,7 +58,7 @@ def source_binary_love(
         mass_1, mass_2, 
         luminosity_distance, 
         a_1, tilt_1, phi_12, a_2, tilt_2, phi_jl, theta_jn, phase, 
-        lambda_s, xi_bar, 
+        lambda_s, xi_tilde, 
         **kwargs):
     """
     Add dissipative tidal deformability to binary neutron star waveform in the frequency domain.
@@ -66,7 +66,7 @@ def source_binary_love(
     """
     freqs = np.append(frequency_array, kwargs['reference_frequency'])
 
-    phi = _dissipative_tidal_phase_xi_bar(frequency_array, mass_1, mass_2, xi_bar)
+    phi = _dissipative_tidal_phase_xi_tilde(frequency_array, mass_1, mass_2, xi_tilde)
 
     mass_ratio = bilby.gw.conversion.component_masses_to_mass_ratio(mass_1,mass_2)
 
@@ -122,7 +122,7 @@ def source_binary_love_relative_binning(
         mass_1, mass_2, 
         luminosity_distance, 
         a_1, tilt_1, phi_12, a_2, tilt_2, phi_jl, theta_jn, phase, 
-        lambda_s, xi_bar, 
+        lambda_s, xi_tilde, 
         **kwargs):
     """
     Add dissipative tidal deformability to binary neutron star waveform in the frequency domain.
@@ -131,7 +131,7 @@ def source_binary_love_relative_binning(
     """
     freqs = np.append(frequency_array, kwargs['reference_frequency'])
 
-    phi = _dissipative_tidal_phase_xi_bar(frequency_array, mass_1, mass_2, xi_bar)
+    phi = _dissipative_tidal_phase_xi_tilde(frequency_array, mass_1, mass_2, xi_tilde)
 
     mass_ratio = bilby.gw.conversion.component_masses_to_mass_ratio(mass_1,mass_2)
 

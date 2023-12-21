@@ -1,11 +1,10 @@
+#!/usr/bin/env python
 """
-Parameter estimation script that computes the posterior probability on all binary neutron star parameters, including xibar. 
-Base waveform is IMRPhenomPv2
+Parameter estimation script that computes the posterior probability on all binary neutron star parameters, including xitilde. 
+Base waveform is IMRPhenomD.
 
 The script makes use of the updated marginalized binary love relations arXiv:1903.03909.
 """
-#!/usr/bin/env python
-
 import sys
 import bilby
 import nrtidal_d
@@ -58,14 +57,17 @@ sampling_frequency = 4096
 """
 Read in the glitch free GW170817 data
 """
+
 hdf5_filenames = {
     "H1": args.strain_dir+ "/H-H1_LOSC_CLN_4_V1-1187007040-2048_no_glitch.hdf5",
     "L1": args.strain_dir+ "/L-L1_LOSC_CLN_4_V1-1187007040-2048_no_glitch.hdf5",
     "V1": args.strain_dir+ "/V-V1_LOSC_CLN_4_V1-1187007040-2048_no_glitch.hdf5"
 }
+
 """
 Read in detector PSD files
 """
+
 datapsd=np.loadtxt(args.strain_dir + "/GWTC1_GW170817_PSDs.dat")
 
 farray=datapsd[:,0]
@@ -74,9 +76,7 @@ l1psd= datapsd[:,2]
 v1psd = datapsd[:,3]
 
 psd_array = {"H1":h1psd, "L1":l1psd, "V1": v1psd}
-"""
-Set up detector network
-"""
+
 det_names = np.array(["H1,L1,V1"])
 ifo_list = bilby.gw.detector.InterferometerList([])
 
@@ -101,7 +101,6 @@ logger.info("Finished setting up strain and PSD.")
 logger.info("Saving IFO data plots to {}".format(args.outdir))
 bilby.core.utils.check_directory_exists_and_if_not_mkdir(args.outdir)
 ifo_list.plot_data(outdir=args.outdir, label=args.label)
-
 #-------------------------------------------------------------
 """
 Set up priors on all waveform parameters.
@@ -117,17 +116,9 @@ priors["chirp_mass"] = bilby.gw.prior.UniformInComponentsChirpMass(minimum=1.184
 priors["mass_ratio"] = bilby.gw.prior.UniformInComponentsMassRatio(minimum=0.5, maximum=1, name="mass_ratio",
                                               latex_label="$q$", unit=None)
 
-priors["a_1"] = bilby.gw.prior.Uniform(name="a_1", minimum=0, maximum=0.05,
-                                       latex_label="$a_1$", unit=None, boundary=None)
-priors["a_2"] = bilby.gw.prior.Uniform(name="a_2", minimum=0, maximum=0.05,
-                                       latex_label="$a_2$", unit=None, boundary=None)
 
-priors["tilt_1"] = bilby.prior.Sine(name="tilt_1", latex_label="$\\theta_1$", unit=None)
-priors["tilt_2"] = bilby.prior.Sine(name="tilt_2", latex_label="$\\theta_2$", unit=None)
-priors["phi_12"] = bilby.gw.prior.Uniform(name="phi_12", minimum=0, maximum=2 * np.pi,
-                                          boundary="periodic", latex_label="$\\Delta\\phi$", unit=None)
-priors["phi_jl"] = bilby.gw.prior.Uniform(name="phi_jl", minimum=0, maximum=2 * np.pi,
-                                          boundary="periodic", latex_label="$\\phi_{JL}$", unit=None)
+priors["chi_1"]=bilby.gw.prior.AlignedSpin(name="chi_1", a_prior=bilby.gw.prior.Uniform(minimum=0, maximum=0.05))
+priors["chi_2"]=bilby.gw.prior.AlignedSpin(name="chi_2", a_prior=bilby.gw.prior.Uniform(minimum=0, maximum=0.05))
 priors["luminosity_distance"] = bilby.gw.prior.UniformSourceFrame(name="luminosity_distance",
                                                                      minimum=10, maximum=100, latex_label="$d_L$",
                                                                      unit="Mpc", boundary=None)
@@ -136,6 +127,7 @@ priors["theta_jn"] = bilby.prior.Sine(name="theta_jn", latex_label="$\\theta_{JN
                                          unit=None, minimum=0, maximum=np.pi, boundary=None)
 priors["psi"] = bilby.gw.prior.Uniform(name="psi", minimum=0, maximum=np.pi, boundary="periodic",
                                        latex_label="$\\psi$", unit=None)
+
 
 priors["lambda_1"] = bilby.core.prior.Constraint( name="lambda_1", minimum=0, maximum=3000)
 priors["lambda_2"] = bilby.core.prior.Constraint(name="lambda_2", minimum=0, maximum=3000)
@@ -153,14 +145,14 @@ priors["dec"] =  bilby.prior.Cosine(name="dec", latex_label="$\\mathrm{DEC}$",
 priors["ra"] =  bilby.gw.prior.Uniform(name="ra", minimum=0, maximum=2 * np.pi, boundary="periodic",
                                        latex_label="$\\mathrm{RA}$", unit=None)
 
-priors["xi_bar"] = bilby.core.prior.Uniform(0,1000,name="xi_bar")
+priors["xi_tilde"] = bilby.core.prior.Uniform(0,1000,name="xi_tilde")
 
 #-----------------------------------------------------------------
 """
 Set up waveform generator and waveform source model
 """
 waveform_arguments = dict(
-    waveform_approximant="IMRPhenomPv2_NRTidal",
+    waveform_approximant="IMRPhenomD_NRTidal",
     reference_frequency=20.0
 )
 

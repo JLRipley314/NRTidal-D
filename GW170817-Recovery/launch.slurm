@@ -27,9 +27,9 @@ strain_GW170817=$HOME/scratch/GW170817-Data/no-glitch
 savedir=$HOME/scratch/$SLURM_JOB_NAME/$SLURM_JOB_ID
 
 # Parameter estimation script
-fname=xibar_GW170817_binary_love_IMRPhenomPv2.py 
-#fname=xibar_GW170817_binary_love_IMRPhenomD.py 
-#fname=xibar_GW170817_no_binary_love.py 
+fname=xitilde_GW170817_binary_love_IMRPhenomPv2.py 
+#fname=xitilde_GW170817_binary_love_IMRPhenomD.py 
+#fname=xitilde_GW170817_no_binary_love.py 
 
 mkdir -p $savedir
 cd  $savedir

@@ -19,8 +19,8 @@ parser.add_argument("-l", "--label", type=str, default="GW170817",
 parser.add_argument("-n", "--npool", type=int, default=1, 
                     help="Number of CPUs.")
 
-parser.add_argument("-x", "--xibar", type=float, default=0, 
-                    help="Value of xi bar")
+parser.add_argument("-x", "--xitilde", type=float, default=0, 
+                    help="Value of xi tilde")
 
 parser.add_argument("-ad", "--asd_dir", type=str, default = "", 
                     help="Location of strain data")
@@ -61,7 +61,7 @@ injection_parameters = dict(
         ra=3.4,
         dec=-0.401,
         lambda_s=584,
-        xi_bar=args.xibar,
+        xi_tilde=args.xitilde,
         fiducial=1,
     )
 #-----------------------------------------------------------------
@@ -86,7 +86,7 @@ priors["lambda_2"] = bilby.core.prior.Constraint(
 )
 priors["lambda_s"] = bilby.core.prior.Triangular(mode=1500,minimum=0,maximum=3000)
 
-priors["xi_bar"] = bilby.core.prior.Uniform(0,1000,name="xi_bar")
+priors["xi_tilde"] = bilby.core.prior.Uniform(0,1000,name="xi_tilde")
 
 del priors["geocent_time"], priors["phase"]
 #-----------------------------------------------------------------

@@ -36,7 +36,15 @@ If you have any questions, please feel free to contact any one of us.
 
 We will add the appropriate citation once the paper appears on the arxiv.
 ```
-bibtex 
+@article{Ripley:2023lsq,
+    author = "Ripley, Justin L. and Hegade K. R., Abhishek and Chandramouli, Rohit S. and Yunes, and Nicolas",
+    title = "{First constraint on the dissipative tidal deformability of neutron stars}",
+    eprint = "2312.11659",
+    archivePrefix = "arXiv",
+    primaryClass = "gr-qc",
+    month = "12",
+    year = "2023"
+}
 ```
 
 For reference, the "theory" paper (derivation of the dissiaptive tidal deformability phasing formula) is

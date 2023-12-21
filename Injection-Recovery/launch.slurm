@@ -3,7 +3,7 @@
 #
 # Usage:
 #
-# sbatch launch.slurm [value of xibar] 
+# sbatch launch.slurm [value of xitilde] 
 #
 
 #SBATCH --job-name=GW17

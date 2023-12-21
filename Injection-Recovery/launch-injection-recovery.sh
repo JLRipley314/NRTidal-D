@@ -13,13 +13,13 @@ nrtd=$HOME/NRTidal-D
 outstem=/home/ripley/scratch/GW170817-InjectionRecovery
 
 detectors=("O4" "O5" "CE")
-xibars=(20 200 400)
+xitildes=(20 200 400)
 
 for det in "${detectors[@]}"; do
-  for xibar in "${xibars[@]}"; do
-    echo "Detector ${det}, Xibar ${xibar}"
+  for xitilde in "${xitildes[@]}"; do
+    echo "Detector ${det}, Xitilde ${xitilde}"
     main="main_${det}.py"
-    d="$outstem/${det}-recover-Xi${xibar}"
+    d="$outstem/${det}-recover-Xi${xitilde}"
     mkdir $d
     cd $d
     cp $nrtd/Waveform-Model/nrtidal_d.py nrtidal_d.py 
@@ -27,6 +27,6 @@ for det in "${detectors[@]}"; do
     cp $nrtd/Injection-Recovery/$main main.py 
     cp $nrtd/ASD-Files/*.txt . 
     cp $nrtd/Injection-Recovery/launch.slurm launch.slurm
-    sbatch launch.slurm ${xibar} 
+    sbatch launch.slurm ${xitilde} 
   done
 done
