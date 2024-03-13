@@ -1,6 +1,7 @@
 # NRTidal-D
 
 Analysis of the dissipative tidal deformability from gravitational wave (GW) strain data. 
+In short: scripts for the Bayesian parameter estimation of the dissipative tidal deformabilities of the neutron stars in GW170817.
 For more details of our analysis, see the accompanying paper (see the `Citation` at the bottom). 
 
 1. `Waveform model`: Scripts for our waveform model (including the marginalized binary Love relations) 
