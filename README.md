@@ -21,7 +21,12 @@ If you have that installed our scripts should run fine, but beware of the differ
 
 # GW170817 Data 
 
-We used the glitch removed strain data, which can be accessed [here](https://gwosc.org/events/GW170817/).
+We downloaded that data from [gwosc.org](https://gwosc.org/events/GW170817/).
+
+# Data, plots 
+
+We have uploaded the GW170817 data we used, along with the raw output of our samplers, to [zenodo](https://doi.org/10.5281/zenodo.10967278).
+There you'l find more than 1GB of data, too much to be directly uploaded onto this github repo. 
 
 # Authors
 
