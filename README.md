@@ -21,7 +21,7 @@ If you have that installed our scripts should run fine, but beware of the differ
 
 # GW170817 Data 
 
-We downloaded the glitch-free GW170817 strain data from [gwosc.org](https://gwosc.org/events/GW170817/).
+We downloaded the glitch-free GW170817 strain data from [gwosc.org](https://doi.org/10.7935/K5B8566F).
 
 # Data, plots 
 
@@ -39,7 +39,7 @@ If you have any questions, please feel free to contact any one of us.
 
 # Citation
 
-We will add the appropriate citation once the paper appears on the arxiv.
+Our data analysis paper 
 ```
 @article{Ripley:2023lsq,
     author = "Ripley, Justin L. and Hegade K. R., Abhishek and Chandramouli, Rohit S. and Yunes, and Nicolas",
