@@ -9,6 +9,12 @@ For more details of our analysis, see the accompanying paper (see the `Citation`
 3. `GW170817-Recovery`: Scripts to perform Bayesian analysis of GW170817 GW strain data. 
 3. `ASD-Files`: Amplitude strain data files (for different gravitational wave detector networks). 
 
+# Conventions
+
+In our ``theory'' and ``analysis'' papers (see Citation), we define the dissipative tidal deformability ``xi_tilde'' with an extra factor of 8, so that in the limit where the stars have the same radii, masses, tidal deformability, and dissipative tidal deformability (R1 = R2, ..., Xi1 = Xi2), then Xi reduces to Xi1. 
+In the code here, we did not include the extra factor of 8 for historical reasons.
+To match the output in our papers then, you should multiply the code output for xi_tilde by 8. 
+
 # Installation
 
 This is not a proper python package; it is a collection of scripts we used to perform Bayesian analysis on GW data. 
