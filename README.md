@@ -31,7 +31,7 @@ We downloaded the glitch-free GW170817 strain data from [gwosc.org](https://doi.
 
 # Data, plots 
 
-We have uploaded the strain data we used, the raw output of our samplering of that data, and our plotting scripts to [zenodo](https://doi.org/10.5281/zenodo.10967278).
+We have uploaded the strain data we used, the raw output of our samplering of that data, and our plotting scripts to [zenodo](https://doi.org/10.5281/zenodo.11626502).
 
 # Authors
 
