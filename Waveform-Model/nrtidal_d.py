@@ -72,8 +72,8 @@ def source_binary_love(
 
     lambda_a = bn.convert_lambda_s_to_lambda_a_marginalized(lambda_s,mass_ratio)
 
-    lambda_1 = abs(lambda_s + lambda_a)
-    lambda_2 = abs(lambda_s - lambda_a)
+    lambda_2 = abs(lambda_s + lambda_a)
+    lambda_1 = abs(lambda_s - lambda_a)
 
     polarizations = bilby.gw.source.lal_binary_neutron_star(
             frequency_array, 
@@ -88,6 +88,35 @@ def source_binary_love(
     
     return polarizations
 
+def lambda_1_lambda_2_from_lambda_s_BL(
+        frequency_array, 
+        mass_1, mass_2, 
+        luminosity_distance, 
+        a_1, tilt_1, phi_12, a_2, tilt_2, phi_jl, theta_jn, phase, 
+        lambda_s, 
+        **kwargs):
+    """
+    Add dissipative tidal deformability to binary neutron star waveform in the frequency domain.
+    Samples on lambda_s = (lambda_1 + lambda_2)/2, but NOT on the dissipative tidal number.
+    """
+    freqs = np.append(frequency_array, kwargs['reference_frequency'])
+
+    mass_ratio = bilby.gw.conversion.component_masses_to_mass_ratio(mass_1,mass_2)
+
+    lambda_a = bn.convert_lambda_s_to_lambda_a_marginalized(lambda_s,mass_ratio)
+
+    lambda_1 = abs(lambda_s - lambda_a)
+    lambda_2 = abs(lambda_s + lambda_a)
+
+    return [lambda_1,lambda_2]
+
+    return bilby.gw.source.lal_binary_neutron_star(
+            frequency_array, 
+            mass_1, mass_2, 
+            luminosity_distance, 
+            a_1, tilt_1, phi_12, a_2, tilt_2, phi_jl, theta_jn, phase, 
+            lambda_1, lambda_2, 
+            **kwargs)
 
 def source_binary_love_noXi(
         frequency_array, 
@@ -106,8 +135,8 @@ def source_binary_love_noXi(
 
     lambda_a = bn.convert_lambda_s_to_lambda_a_marginalized(lambda_s,mass_ratio)
 
-    lambda_1 = abs(lambda_s + lambda_a)
-    lambda_2 = abs(lambda_s - lambda_a)
+    lambda_2 = abs(lambda_s + lambda_a)
+    lambda_1 = abs(lambda_s - lambda_a)
 
     return bilby.gw.source.lal_binary_neutron_star(
             frequency_array, 
@@ -137,8 +166,8 @@ def source_binary_love_relative_binning(
 
     lambda_a = bn.convert_lambda_s_to_lambda_a_marginalized(lambda_s,mass_ratio)
 
-    lambda_1 = abs(lambda_s + lambda_a)
-    lambda_2 = abs(lambda_s - lambda_a)
+    lambda_2 = abs(lambda_s + lambda_a)
+    lambda_1 = abs(lambda_s - lambda_a)
 
     polarizations = bilby.gw.source.lal_binary_neutron_star_relative_binning(
             frequency_array, 
